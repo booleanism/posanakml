@@ -11,16 +11,14 @@ app = Flask(__name__)
 with open('stunting_model.sav', 'rb') as f:
     model = pickle.load(f)
 
+clf_class = ['tinggi', 'normal', 'stunting', 'xstunting']
+n_class = 4
+
 def detect(umur: int, jenis_kelamin: int, tinggi_badan: int) -> Tuple[str, int] | None:
     pred = model.predict([[umur, jenis_kelamin, tinggi_badan]])
-    if pred[0] == 3:
-        return 'tinggi', 0
-    if pred[0] == 2:
-        return 'normal', 1
-    if pred[0] == 1:
-        return 'stunting', 2
-    if pred[0] == 0:
-        return 'xstunting', 3
+    res = n_class - 1 - pred[0].item()
+    if res < n_class:
+        return clf_class[res], res
     
     return None
 
@@ -54,6 +52,7 @@ def predict():
 
     resp_obj['result'] = pred[1]
     resp_obj['message'] = pred[0]
+    print(resp_obj)
     return jsonify(resp_obj), 200
 
 if __name__ == "__main__":
