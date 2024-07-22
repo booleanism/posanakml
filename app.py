@@ -1,11 +1,13 @@
 from typing import Dict, Tuple
 from flask import Flask, request, jsonify
 import pickle
+from flask_cors import CORS
 import warnings
 
 warnings.filterwarnings("ignore")
 
 app = Flask(__name__)
+CORS(app)
 
 
 with open('stunting_model.sav', 'rb') as f:
@@ -89,7 +91,6 @@ def predict():
 
     resp_obj['result'] = pred[1]
     resp_obj['message'] = pred[0]
-    print(resp_obj)
     return jsonify(resp_obj), 200
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ RUN python3 -m venv venv
 ENV VIRTUAL_ENV=/app/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
  
-RUN pip install flask scikit-learn gunicorn
+RUN pip install flask scikit-learn gunicorn flask-cors
  
 # Stage 2
 FROM python:3.11.9-slim-bullseye AS runner
